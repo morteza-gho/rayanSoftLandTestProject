@@ -1,6 +1,6 @@
 import { useState } from 'react';
 // @mui
-import { alpha } from '@mui/material/styles';
+import { alpha, createTheme } from '@mui/material/styles';
 import { Box, MenuItem, Stack, IconButton, Popover } from '@mui/material';
 
 // ----------------------------------------------------------------------
@@ -10,17 +10,19 @@ const LANGS = [
     value: 'en',
     label: 'English',
     icon: '/assets/icons/ic_flag_en.svg',
+    dir: 'ltr'
   },
   {
-    value: 'de',
-    label: 'German',
-    icon: '/assets/icons/ic_flag_de.svg',
+    value: 'fa',
+    label: 'Persian',
+    icon: '/assets/icons/ic_flag_fa.svg',
+    dir: 'rtl'
   },
-  {
+  /* {
     value: 'fr',
     label: 'French',
     icon: '/assets/icons/ic_flag_fr.svg',
-  },
+  }, */
 ];
 
 // ----------------------------------------------------------------------
@@ -33,6 +35,14 @@ export default function LanguagePopover() {
   };
 
   const handleClose = () => {
+    setOpen(null);
+  }
+
+  const changeLanguag = (item) => {
+    document.dir = item.dir
+    createTheme({
+      direction: 'rtl'
+    })
     setOpen(null);
   };
 
@@ -74,7 +84,7 @@ export default function LanguagePopover() {
       >
         <Stack spacing={0.75}>
           {LANGS.map((option) => (
-            <MenuItem key={option.value} selected={option.value === LANGS[0].value} onClick={() => handleClose()}>
+            <MenuItem key={option.value} selected={option.value === LANGS[0].value} onClick={() => changeLanguag(option)}>
               <Box component="img" alt={option.label} src={option.icon} sx={{ width: 28, mr: 2 }} />
 
               {option.label}
