@@ -61,6 +61,8 @@ export default function DashboardAppPage() {
 
   const addPost = () => {
     setEditingPost(null);
+    setPostTitle('');
+    setPostBody('');
     setOpen(true);
   }
 
