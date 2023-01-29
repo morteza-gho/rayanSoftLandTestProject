@@ -40,9 +40,6 @@ export default function LanguagePopover() {
 
   const changeLanguag = (item) => {
     document.dir = item.dir
-    createTheme({
-      direction: 'rtl'
-    })
     setOpen(null);
   };
 

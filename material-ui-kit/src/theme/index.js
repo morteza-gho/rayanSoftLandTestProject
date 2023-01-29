@@ -3,6 +3,10 @@ import { useMemo } from 'react';
 // @mui
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider as MUIThemeProvider, createTheme, StyledEngineProvider } from '@mui/material/styles';
+import rtlPlugin from 'stylis-plugin-rtl';
+import { prefixer } from 'stylis';
+import { CacheProvider } from '@emotion/react';
+import createCache from '@emotion/cache';
 //
 import palette from './palette';
 import shadows from './shadows';
@@ -10,6 +14,8 @@ import typography from './typography';
 import GlobalStyles from './globalStyles';
 import customShadows from './customShadows';
 import componentsOverride from './overrides';
+
+
 
 // ----------------------------------------------------------------------
 
@@ -32,13 +38,25 @@ export default function ThemeProvider({ children }) {
   const theme = createTheme(themeOptions);
   theme.components = componentsOverride(theme);
 
+  // Create rtl cache
+  const cacheRtl = createCache({
+    key: 'muirtl',
+    stylisPlugins: [prefixer, rtlPlugin]
+  });
+
+  const cacheLtr = createCache({
+    key: 'muiltr'
+  });
+
   return (
     <StyledEngineProvider injectFirst>
-      <MUIThemeProvider theme={theme}>
-        <CssBaseline />
-        <GlobalStyles />
-        {children}
-      </MUIThemeProvider>
+      <CacheProvider value={cacheLtr}>
+        <MUIThemeProvider theme={theme}>
+          <CssBaseline />
+          <GlobalStyles />
+          {children}
+        </MUIThemeProvider>
+      </CacheProvider>
     </StyledEngineProvider>
   );
 }
