@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 // @mui
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider as MUIThemeProvider, createTheme, StyledEngineProvider } from '@mui/material/styles';
@@ -14,6 +14,7 @@ import typography from './typography';
 import GlobalStyles from './globalStyles';
 import customShadows from './customShadows';
 import componentsOverride from './overrides';
+import { appContext } from '../context/AppContext';
 
 
 
@@ -38,6 +39,8 @@ export default function ThemeProvider({ children }) {
   const theme = createTheme(themeOptions);
   theme.components = componentsOverride(theme);
 
+  const {isRtl} = useContext(appContext);
+
   // Create rtl cache
   const cacheRtl = createCache({
     key: 'muirtl',
@@ -50,7 +53,7 @@ export default function ThemeProvider({ children }) {
 
   return (
     <StyledEngineProvider injectFirst>
-      <CacheProvider value={cacheLtr}>
+      <CacheProvider value={isRtl ? cacheRtl : cacheLtr}>
         <MUIThemeProvider theme={theme}>
           <CssBaseline />
           <GlobalStyles />

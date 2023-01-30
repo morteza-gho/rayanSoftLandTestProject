@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 // @mui
 import { alpha, createTheme } from '@mui/material/styles';
 import { Box, MenuItem, Stack, IconButton, Popover } from '@mui/material';
+import { appContext } from '../../../context/AppContext';
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +29,8 @@ const LANGS = [
 // ----------------------------------------------------------------------
 
 export default function LanguagePopover() {
+
+  const {isRtl, toggleRtl} = useContext(appContext);
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -39,7 +42,8 @@ export default function LanguagePopover() {
   }
 
   const changeLanguag = (item) => {
-    document.dir = item.dir
+    document.dir = item.dir;
+    toggleRtl(!isRtl)
     setOpen(null);
   };
 
